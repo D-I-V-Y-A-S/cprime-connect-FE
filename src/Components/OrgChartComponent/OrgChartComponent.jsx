@@ -5,11 +5,12 @@ import './OrgChartComponent.css';
 
 const OrgChart = () => {
   const [orgData, setOrgData] = useState(null);
+  const [expandedNodes, setExpandedNodes] = useState({}); // Track expanded nodes
 
   useEffect(() => {
     axios.get('http://localhost:4000/api/v1/org-chart')
       .then(response => {
-        setOrgData(response.data);  // Assuming the response is the organization data
+        setOrgData(response.data); // Assuming the response is the organization data
       })
       .catch(error => console.error('Error fetching org chart data:', error));
   }, []);
@@ -22,18 +23,32 @@ const OrgChart = () => {
     }));
   }, []);
 
+  const toggleNodeExpansion = (nodeName) => {
+    setExpandedNodes(prevState => ({
+      ...prevState,
+      [nodeName]: !prevState[nodeName], // Toggle node expansion state
+    }));
+  };
+
   const renderTreeNodes = (node) => {
+    const isExpanded = expandedNodes[node.name]; // Check if node is expanded
+    const subordinatesCount = node.subordinates ? node.subordinates.length : 0; // Count of subordinates
+
     return (
-      <TreeNode className='tree'
+      <TreeNode
         key={node.name}
+        className='tree'
         label={
-          <div className="node-box">
+          <div className="node-box" onClick={() => toggleNodeExpansion(node.name)}>
             <div className="node-text-name">{node.name}</div>
             <div className="node-text-designation">{node.designation}</div>
+            <div className="node-text-subordinates">
+              {subordinatesCount > 0 ? `Direct Reports: ${subordinatesCount}` : ''}
+            </div>
           </div>
         }
       >
-        {node.subordinates && node.subordinates.map((subordinate) => renderTreeNodes(subordinate))}
+        {isExpanded && node.subordinates && node.subordinates.map((subordinate) => renderTreeNodes(subordinate))}
       </TreeNode>
     );
   };
@@ -42,6 +57,7 @@ const OrgChart = () => {
     <div className="org-chart-container">
       <h2>Organization Chart</h2>
       {orgData ? (
+        // Only render the CEO node at the start
         convertToTreeFormat(orgData).map((rootNode, index) => (
           <Tree
             key={index}
