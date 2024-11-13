@@ -5,7 +5,7 @@ import AppRoutes from '../routes/AppRoutes'
 const Layout = () => {
   return (
     <>
-      <AppRoutes />
+      {/* <AppRoutes /> */}
     </>
   )
 }

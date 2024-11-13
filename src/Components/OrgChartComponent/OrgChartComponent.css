@@ -1,0 +1,80 @@
+/* General Container for Org Chart */
+.org-chart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+  font-family: 'Barlow Condensed', sans-serif;
+}
+
+/* Header Styling */
+h2 {
+  font-size: 28px;
+  font-weight: bold;
+  color: #E3194B; /* Cprime Red */
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.tree{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Node Box Styling */
+.node-box {
+  background-color: #FFFFFF;
+  border: 2px solid #E3194B;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  min-width: 10rem;
+  max-width: 20rem;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+/* Hover effect on nodes */
+.node-box:hover {
+  background-color: #F5CA48;
+  cursor: pointer;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Node Name Text Styling */
+.node-text-name {
+  font-size: 20px;
+  font-weight: bold;
+  color: #E3194B;
+}
+
+/* Node Designation Text Styling */
+.node-text-designation {
+  font-size: 16px;
+  color: #89002A;
+  margin-top: 5px;
+}
+
+/* Lines connecting nodes */
+.react-org-line {
+  background-color: #F59C2D;
+  border-radius: 10px;
+  height: 2px;
+}
+
+/* Adjust spacing between nodes for better readability */
+.treeNode__parent {
+  margin-bottom: 40px;
+}
+
+.treeNode__children {
+  margin-top: 40px;
+}
+
+/* Styling for root node image container */
+.org-chart-container img {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}

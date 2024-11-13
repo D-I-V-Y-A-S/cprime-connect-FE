@@ -2,6 +2,7 @@
 import React from "react";
 import "./App.css";
 import Layout from "./layout/Layout";
+import AppRoutes from './routes/AppRoutes';
 //Import Area End
 
 function App() {
@@ -9,6 +10,7 @@ function App() {
   return (
     <>
       <Layout />
+      <AppRoutes />
     </>
   );
 }
