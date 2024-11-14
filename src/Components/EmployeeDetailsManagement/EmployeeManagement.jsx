@@ -4,16 +4,21 @@ import './EmployeeManagement.css';
 const EmployeeManagement = () => {
     const [employees, setEmployees] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const [editingEmployee, setEditingEmployee] = useState(null);
 
     useEffect(() => {
         fetchEmployees();
     }, []);
 
     const fetchEmployees = async () => {
-        const response = await fetch('http://localhost:4010/api/v1/employees');
-        const data = await response.json();
-        setEmployees(data);
+        try {
+            const response = await fetch('http://localhost:4010/api/v1/employees');
+            if (!response.ok) throw new Error('Failed to fetch employees');
+            const data = await response.json();
+            setEmployees(data);
+        } catch (error) {
+            console.error("Error fetching employees:", error);
+            setEmployees([]);
+        }
     };
 
     const handleSearchChange = (event) => {
@@ -25,134 +30,101 @@ const EmployeeManagement = () => {
             fetchEmployees();
             return;
         }
-        const response = await fetch(`http://localhost:4010/api/v1/employees/search/${searchTerm}`);
-        const data = await response.json();
-        setEmployees(data);
-    };
-
-    const handleEdit = (employee) => {
-        setEditingEmployee(employee);
-    };
-
-    const handleEditChange = (event) => {
-        const { name, value } = event.target;
-        setEditingEmployee((prevEmployee) => ({
-            ...prevEmployee,
-            [name]: value,
-        }));
-    };
-
-    const handleUpdate = async () => {
-        const response = await fetch(`http://localhost:4010/api/v1/employees/edit`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(editingEmployee),
-        });
-        const data = await response.json();
-        if (data) {
-            fetchEmployees();
-            setEditingEmployee(null);
+        try {
+            const response = await fetch(`http://localhost:4010/api/v1/employees/search/${searchTerm}`);
+            if (!response.ok) throw new Error('Failed to search employees');
+            const data = await response.json();
+            setEmployees(data);
+        } catch (error) {
+            console.error("Error searching employees:", error);
+            setEmployees([]);
         }
     };
 
     return (
-        <div className="employee-management">
-            <h1 className="title">Employee Management</h1>
-            
-            <div className="search-bar">
-                <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={handleSearchChange}
-                    placeholder="Search employees..."
-                    className="search-input"
-                />
-                <button onClick={searchEmployees} className="search-button">Search</button>
-            </div>
+        <div className="page-container">
+            <aside className="sidebar">
+                <div className="logo">cprime</div>
+                <nav className="nav-menu">
+                    <a href="#dashboard">Dashboard</a>
+                    <a href="#onboarding">Onboarding</a>
+                    <a href="#employee" className="active">Employee</a>
+                    <a href="#attendance">Attendance</a>
+                    <a href="#payroll">Payroll</a>
+                    <a href="#performance">Performance</a>
+                    <a href="#offboarding">Offboarding</a>
+                    <a href="#assets">Assets</a>
+                    <a href="#policies">Policies</a>
+                    <a href="#helpdesk">Helpdesk</a>
+                </nav>
+            </aside>
 
-            <h2 className="subtitle">Employee List</h2>
-            <table className="employee-table">
-                <thead>
-                    <tr>
-                        <th>EmployeeId</th>
-                        <th>EmployeeName</th>
-                        <th>ReportingManager</th>
-                        <th>Designation</th>
-                        <th>Role</th>
-                        <th>DateOfBirth</th>
-                        <th>EmailId</th>
-                        <th>JoiningDate</th>
-                        <th>Department</th>
-                        <th>Location</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {employees.map((employee) => (
-                        <tr key={employee._id}>
-                            <td>{employee.EmployeeId}</td>
-                            <td>{employee.EmployeeName}</td>
-                            <td>{employee.ReportingManager}</td>
-                            <td>{employee.Designation}</td>
-                            <td>{employee.Role}</td>
-                            <td>{new Date(employee.DateOfBirth).toLocaleDateString()}</td>
-                            <td>{employee.EmailId}</td>
-                            <td>{new Date(employee.JoiningDate).toLocaleDateString()}</td>
-                            <td>{employee.Department}</td>
-                            <td>{employee.Location}</td>
-                            <td>
-                                <button onClick={() => handleEdit(employee)} className="edit-button">Edit</button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            <main className="content">
+                <header className="header">
+                    <input
+                        type="text"
+                        placeholder="Search Cprime"
+                        className="header-search"
+                    />
+                    <div className="header-profile">S</div>
+                </header>
 
-            {editingEmployee && (
-    <div className="edit-form">
-        <h3>Edit Employee</h3>
+                <section className="employee-management-section">
+                    <h1 className="title">Employee Record Management</h1>
+                    
+                    <div className="search-bar">
+                        <input
+                            type="text"
+                            value={searchTerm}
+                            onChange={handleSearchChange}
+                            placeholder="Search employees..."
+                            className="search-input"
+                        />
+                        <button onClick={searchEmployees} className="search-button">Search</button>
+                    </div>
 
-        <label htmlFor="EmployeeName">Employee Name</label>
-        <input
-            type="text"
-            name="EmployeeName"
-            value={editingEmployee.EmployeeName}
-            onChange={handleEditChange}
-            placeholder="Employee Name"
-        />
+                    <div className="table-container">
+                        <table className="employee-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Reporting Manager</th>
+                                    <th>Designation</th>
+                                    <th>Role</th>
+                                    <th>Date of Birth</th>
+                                    <th>Email ID</th>
+                                    <th>Joining Date</th>
+                                    <th>Department</th>
+                                    <th>Location</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {employees.map((employee) => (
+                                    <tr key={employee._id}>
+                                        <td>{employee.EmployeeId || "N/A"}</td>
+                                        <td>{employee.EmployeeName || "N/A"}</td>
+                                        <td>{employee.ReportingManager || "N/A"}</td>
+                                        <td>{employee.Designation || "N/A"}</td>
+                                        <td>{employee.Role || "N/A"}</td>
+                                        <td>{employee.DateOfBirth || "N/A"}</td>
+                                        <td>{employee.EmailId || "N/A"}</td>
+                                        <td>{employee.JoiningDate || "N/A"}</td>
+                                        <td>{employee.Department || "N/A"}</td>
+                                        <td>{employee.Location || "N/A"}</td>
+                                        <td><button className="action-button">Button</button></td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
 
-        <label htmlFor="Designation">Designation</label>
-        <input
-            type="text"
-            name="Designation"
-            value={editingEmployee.Designation}
-            onChange={handleEditChange}
-            placeholder="Designation"
-        />
-
-        <label htmlFor="Role">Role</label>
-        <input
-            type="text"
-            name="Role"
-            value={editingEmployee.Role}
-            onChange={handleEditChange}
-            placeholder="Role"
-        />
-
-        <label htmlFor="EmailId">Email ID</label>
-        <input
-            type="email"
-            name="EmailId"
-            value={editingEmployee.EmailId}
-            onChange={handleEditChange}
-            placeholder="Email ID"
-        />
-
-        <button onClick={handleUpdate}>Update</button>
-    </div>
-)}
+                <footer className="footer">
+                    © 2024 Cprime, Inc. All rights Reserved. Terms & Conditions, Privacy Policy, Cookie Policy
+                </footer>
+            </main>
         </div>
     );
 };
