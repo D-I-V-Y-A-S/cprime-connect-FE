@@ -5,6 +5,7 @@ import React from 'react'
 import { Routes,Route,BrowserRouter } from 'react-router-dom'
 import UserLoginComponent from '../Components/UserLoginComponent/UserLoginComponent'
 import OrgChartComponent from '../Components/OrgChartComponent/OrgChartComponent';
+
 // Import Area End
 
 const AppRoutes = () => {
@@ -13,6 +14,7 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={<UserLoginComponent/>} />
         <Route path="/org-chart" element={<OrgChartComponent />} />
+        
       </Routes>
     </BrowserRouter>
   )

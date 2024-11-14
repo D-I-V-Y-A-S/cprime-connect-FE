@@ -5,12 +5,12 @@ import './OrgChartComponent.css';
 
 const OrgChart = () => {
   const [orgData, setOrgData] = useState(null);
-  const [expandedNodes, setExpandedNodes] = useState({}); // Track expanded nodes
+  const [expandedNodes, setExpandedNodes] = useState({});
 
   useEffect(() => {
-    axios.get('http://localhost:4000/api/v1/org-chart')
+    axios.get('http://localhost:4000/api/v1/org-chart') // Assuming the backend API is running locally
       .then(response => {
-        setOrgData(response.data); // Assuming the response is the organization data
+        setOrgData(response.data);
       })
       .catch(error => console.error('Error fetching org chart data:', error));
   }, []);
@@ -19,6 +19,7 @@ const OrgChart = () => {
     return data.map(item => ({
       name: item.EmployeeName,
       designation: item.Designation,
+      employeeId: item.EmployeeId, // Add employee ID to access photos
       subordinates: item.subordinates ? convertToTreeFormat(item.subordinates) : [],
     }));
   }, []);
@@ -26,7 +27,7 @@ const OrgChart = () => {
   const toggleNodeExpansion = (nodeName) => {
     setExpandedNodes(prevState => ({
       ...prevState,
-      [nodeName]: !prevState[nodeName], // Toggle node expansion state
+      [nodeName]: !prevState[nodeName],
     }));
   };
 
@@ -34,16 +35,27 @@ const OrgChart = () => {
     const isExpanded = expandedNodes[node.name]; // Check if node is expanded
     const subordinatesCount = node.subordinates ? node.subordinates.length : 0; // Count of subordinates
 
+    // Construct the photo URL path based on employee ID
+    const photoUrl = `/photos/${node.employeeId}.jpg`; 
+
     return (
       <TreeNode
         key={node.name}
-        className='tree'
+        className="tree"
         label={
           <div className="node-box" onClick={() => toggleNodeExpansion(node.name)}>
+            <div className="node-photo-container">
+              <img 
+                src={photoUrl} 
+                alt={`${node.name}'s photo`} 
+                className="node-photo" 
+                onError={(e) => e.target.src = '/photos/default.jpg'} // Fallback image if not found
+              />
+            </div>
             <div className="node-text-name">{node.name}</div>
             <div className="node-text-designation">{node.designation}</div>
             <div className="node-text-subordinates">
-              {subordinatesCount > 0 ? `Direct Reports: ${subordinatesCount}` : ''}
+              {subordinatesCount > 0 ? `Direct Reports: ${subordinatesCount}` : 'Direct Reports: 0'}
             </div>
           </div>
         }
@@ -55,9 +67,8 @@ const OrgChart = () => {
 
   return (
     <div className="org-chart-container">
-      <h2>Organization Chart</h2>
+      <h1>ORGANIZATION CHART</h1>
       {orgData ? (
-        // Only render the CEO node at the start
         convertToTreeFormat(orgData).map((rootNode, index) => (
           <Tree
             key={index}
@@ -69,7 +80,7 @@ const OrgChart = () => {
                 <img 
                   src="https://exalate.com/wp-content/uploads/2019/10/logo-coral.png" 
                   alt="Organization Logo" 
-                  style={{ width: '150px', height: '50px' }}
+                  style={{ width: '300px', height: '100px' }}
                 />
               </div>
             }

@@ -8,11 +8,11 @@
 }
 
 /* Header Styling */
-h2 {
-  font-size: 28px;
+h1 {
+  font-size: 50px;
   font-weight: bold;
-  color: #E3194B; /* Cprime Red */
-  margin-bottom: 20px;
+  color: #241F21;
+  margin-bottom: 70px;
   text-align: center;
 }
 
@@ -25,36 +25,43 @@ h2 {
 /* Node Box Styling */
 .node-box {
   background-color: #FFFFFF;
-  border: 2px solid #E3194B;
+  border: 3px solid #89002A;
   padding: 20px;
   border-radius: 8px;
   text-align: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin: 10px;
-  min-width: 200px;
-  max-width: 250px;
+  min-width: 400px;
+  max-width: 600px;
   font-size: 18px;
   line-height: 1.5;
 }
 
 /* Hover effect on nodes */
 .node-box:hover {
-  background-color: #F5CA48;
+   /* Inverts colors */
   cursor: pointer;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* Node Name Text Styling */
 .node-text-name {
-  font-size: 20px;
+  font-size: 40px;
   font-weight: bold;
   color: #E3194B;
 }
 
+.node-text-subordinates{
+  font-size: 25px;
+  font-weight: bold;
+  color: #4F4F4F;
+}
+
 /* Node Designation Text Styling */
 .node-text-designation {
-  font-size: 16px;
+  font-size: 35px;
   color: #89002A;
+  font-weight: 600;
   margin-top: 5px;
 }
 
@@ -73,8 +80,20 @@ h2 {
 .treeNode__children {
   margin-top: 40px;
 }
-
-/* Styling for root node image container */
-.org-chart-container img {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+.node-photo-container {
+  width: 200px;
+  height: 200px;
+  margin-right: 10px;
+  overflow: hidden;
+  
+  display: inline-block;
 }
+
+.node-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the image covers the entire container */
+  border-radius:50%; /* Makes the image circular */
+}
+
+
