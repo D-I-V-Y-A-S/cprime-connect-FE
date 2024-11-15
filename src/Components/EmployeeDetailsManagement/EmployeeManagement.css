@@ -1,54 +1,32 @@
 /* General layout */
 .page-container {
     display: flex;
+    flex-direction: column;
     height: 100vh;
     overflow: hidden;
-}
-
-.sidebar {
-    width: 250px;
-    background-color: #1d1d1d;
-    color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-}
-
-.logo {
-    font-size: 25px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    margin-top: 5px;
-}
-
-.nav-menu a {
-    color: #ffffff;
-    text-decoration: none;
-    margin: 30px 0;
-    font-size: 15px;
-    display: flex;
-    align-items: center;
-}
-
-.nav-menu .active {
-    color: #ff3360;
-    font-weight: bold;
-}
-
-.content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
 }
 
 .header {
     display: flex;
     justify-content: space-between;
-    padding: 10px 20px;
-    background-color: #f5f5f5;
+    align-items: center;
+    padding: 10px 30px;
+    background-color: #fff;
     border-bottom: 1px solid #ddd;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+    color: #ff3366; /* Cprime logo color */
+}
+
+.logo span {
+    color: black; /* Prime part of the logo in black */
 }
 
 .header-search {
@@ -69,8 +47,51 @@
     font-weight: bold;
 }
 
-.employee-management-section {
+/* Sidebar adjustments */
+.sidebar {
+    width: 250px;
+    background-color: #1d1d1d;
+    color: #ffffff;
+    position: fixed;
+    top: 60px; /* Adjusted to sit just below the nav bar */
+    bottom: 0;
+    padding-top: 20px;
+    overflow-y: auto;
+}
+
+.nav-menu a {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 15px 20px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.nav-menu a:hover {
+    background-color: #ffffff;
+    color: #ff3366; /* Change to pinkish red on hover */
+}
+
+.nav-menu .active {
+    color: #ff3360;
+    font-weight: bold;
+}
+
+/* Main content adjustments */
+.content {
+    margin-left: 250px; /* Start from the right edge of the sidebar */
+    margin-top: 60px; /* Start just below the nav bar */
     padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.employee-management-section {
+    padding: 0 20px;
 }
 
 .title {
@@ -100,6 +121,7 @@
     cursor: pointer;
 }
 
+/* Table adjustments */
 .table-container {
     overflow-x: auto;
 }
@@ -129,11 +151,12 @@
     border-radius: 5px;
 }
 
+/* Footer */
 .footer {
     text-align: center;
     padding: 10px;
     background-color: #333;
     color: white;
     font-size: 14px;
-    border-top: 1px solid #ddd;
+    border-top: 10px solid #ddd;
 }
